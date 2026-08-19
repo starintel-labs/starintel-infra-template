@@ -16,11 +16,11 @@ Declarative infrastructure and NixOS configuration for StarIntel.
 
 ```sh
 nix flake check
-nix run .#plan
-nix run .#apply
+nix run .#default.plan
+nix run .#default
 ```
 
-`plan` and `apply` operate on the Terranix/OpenTofu configuration in `.state/infra`.
+`default.plan` plans the Terranix/OpenTofu configuration in `.state/infra`; `default` applies it.
 
 ## Adding a host
 
