@@ -1,0 +1,8 @@
+result
+result-*
+.direnv/
+.state/
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log

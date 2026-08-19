@@ -1,0 +1,30 @@
+name: check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Materialize lock file
+        run: nix flake lock
+      - name: Require committed lock file
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain -- flake.lock)" ]; then
+            echo "::error::flake.lock is not committed or is stale"
+            cat flake.lock
+            exit 1
+          fi
+      - name: Check flake and inventory
+        run: nix flake check --show-trace
